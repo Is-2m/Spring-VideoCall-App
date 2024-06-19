@@ -17,19 +17,25 @@ public class AuthentificationService {
 
     public User login(String email, String password) {
         User user = userRepository.findByEmail(email);
+//    userRepository.
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
         return null;
     }
-    public User register(String email, String password) {
-        User user = userRepository.findByEmail(email);
+    public User register(User jsonUser) {
+        User user = userRepository.findByEmail(jsonUser.getEmail());
         if (user == null) {
             user = new User();
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password));
-//            user.setBirthDate();
+
+            user.setEmail(jsonUser.getEmail());
+            user.setPassword(passwordEncoder.encode(jsonUser.getPassword()));
+            user.setBirthDate(jsonUser.getBirthDate());
+            user.setPhone(jsonUser.getPhone());
+            user.setUsername(jsonUser.getUsername());
+
             userRepository.save(user);
+
             return user;
         }
         return null;

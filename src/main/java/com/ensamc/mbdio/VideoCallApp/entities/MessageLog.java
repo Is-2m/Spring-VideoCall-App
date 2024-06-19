@@ -1,5 +1,6 @@
 package com.ensamc.mbdio.VideoCallApp.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,19 +8,19 @@ import lombok.*;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class MessageLog {
+@AllArgsConstructor public class MessageLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_sender")
-    private User sender;
+    @ManyToOne()
+    @JoinColumn(name = "id_chat")
+    @JsonBackReference
+    private Chat chat;
 
-    @ManyToOne
-    @JoinColumn(name = "id_receiver")
-    private User receiver;
+    private long id_sender;
+
+    private long id_receiver;
 
 
     private String content;

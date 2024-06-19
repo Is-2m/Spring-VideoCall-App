@@ -13,4 +13,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+
+        System.out.println("UserController.updateUser");
+        System.out.println(user);
+
+        User updatedUser = userService.updateUser(id, user);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

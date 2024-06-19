@@ -1,15 +1,20 @@
 package com.ensamc.mbdio.VideoCallApp.entities;
 
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Friendship {
+public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,12 +27,7 @@ public class Friendship {
     @JoinColumn(name = "id_receiver")
     private User receiver;
 
-    @Enumerated(EnumType.STRING)
-    private FriendshipState state;
-
-    private Long date;
-
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
+    @JsonManagedReference
+    private List<MessageLog> messageLogList;
 }
-
-

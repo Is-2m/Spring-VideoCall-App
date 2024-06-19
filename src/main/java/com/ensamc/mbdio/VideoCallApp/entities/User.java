@@ -23,11 +23,34 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String username;
 
     private String phone;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String bio;
+
     private Long birthDate;
 
+    private String profilePicture;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", phone='" + phone + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", bio='" + bio + '\'' +
+                ", birthDate=" + birthDate +
+                ", profilePicture='" + profilePicture + '\'' +
+                '}';
+    }
 }
