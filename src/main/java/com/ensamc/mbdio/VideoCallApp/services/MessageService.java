@@ -1,12 +1,9 @@
 package com.ensamc.mbdio.VideoCallApp.services;
 
-import com.ensamc.mbdio.VideoCallApp.entities.MessageLog;
+import com.ensamc.mbdio.VideoCallApp.entities.Message;
 import com.ensamc.mbdio.VideoCallApp.repositories.IMessageLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MessageLogService {
@@ -22,8 +19,8 @@ public class MessageLogService {
 //        return messageLogRepository.findById(id);
 //    }
 
-    public MessageLog createMessageLog(MessageLog messageLog) {
-        return messageLogRepository.save(messageLog);
+    public Message createMessageLog(Message message) {
+        return messageLogRepository.save(message);
     }
 
 //    public MessageLog updateMessageLog(Long id, MessageLog messageLogDetails) {
