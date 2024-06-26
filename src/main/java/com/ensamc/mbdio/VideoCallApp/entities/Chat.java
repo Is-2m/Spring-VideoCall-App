@@ -29,5 +29,5 @@ public class Chat {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
     @JsonManagedReference
-    private List<MessageLog> messageLogList;
+    private List<Message> messageList;
 }

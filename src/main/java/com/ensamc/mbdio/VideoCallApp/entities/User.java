@@ -2,7 +2,7 @@ package com.ensamc.mbdio.VideoCallApp.entities;
 
 //import jakarta.persistence.*;
 
-import jakarta.persistence.*;
+import  jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -38,19 +38,23 @@ public class User {
 
     private String profilePicture;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Override
     public String toString() {
-        return "User{" +
+        return "User{\n" +
                 "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", phone='" + phone + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", bio='" + bio + '\'' +
-                ", birthDate=" + birthDate +
-                ", profilePicture='" + profilePicture + '\'' +
-                '}';
+                ",\n email='" + email + '\'' +
+                ",\n password='" + password + '\'' +
+                ",\n username='" + username + '\'' +
+                ",\n phone='" + phone + '\'' +
+                ",\n firstName='" + firstName + '\'' +
+                ",\n lastName='" + lastName + '\'' +
+                ",\n bio='" + bio + '\'' +
+                ",\n birthDate=" + birthDate +
+                ",\n profilePicture='" + profilePicture + '\'' +
+                ",\n status=" + status +
+                "\n}";
     }
 }

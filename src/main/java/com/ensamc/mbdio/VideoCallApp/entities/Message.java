@@ -8,7 +8,8 @@ import lombok.*;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor public class MessageLog {
+@AllArgsConstructor
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,14 +19,31 @@ import lombok.*;
     @JsonBackReference
     private Chat chat;
 
-    private long id_sender;
+    @ManyToOne
+    @JoinColumn(name = "id_sender")
+    private User sender;
 
-    private long id_receiver;
+    @ManyToOne
+    @JoinColumn(name = "id_receiver")
+    private User receiver;
 
 
     private String content;
 
     private Long date;
 
+    @Column(columnDefinition = "BOOLEAN")
+    private boolean seen;
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", chat=" + chat +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
+                ", content='" + content + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
 

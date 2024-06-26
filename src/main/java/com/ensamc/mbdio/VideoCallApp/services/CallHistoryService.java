@@ -1,7 +1,7 @@
 package com.ensamc.mbdio.VideoCallApp.services;
 
-import com.ensamc.mbdio.VideoCallApp.entities.Call;
-import com.ensamc.mbdio.VideoCallApp.repositories.ICallRepository;
+import com.ensamc.mbdio.VideoCallApp.entities.CallHistory;
+import com.ensamc.mbdio.VideoCallApp.repositories.ICallHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,31 +9,31 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CallService {
+public class CallHistoryService {
     @Autowired
-    private ICallRepository callRepository;
+    private ICallHistoryRepository callRepository;
 
-    public List<Call> getAllCalls() {
+    public List<CallHistory> getAllCalls() {
         return callRepository.findAll();
     }
 
-    public Optional<Call> getCallById(Long id) {
+    public Optional<CallHistory> getCallById(Long id) {
         return callRepository.findById(id);
     }
 
-    public Call createCall(Call call) {
-        return callRepository.save(call);
+    public CallHistory createCall(CallHistory callHistory) {
+        return callRepository.save(callHistory);
     }
 
-    public Call updateCall(Long id, Call callDetails) {
-        Call call = callRepository.findById(id).orElseThrow(() -> new RuntimeException("Call not found"));
+    public CallHistory updateCall(Long id, CallHistory callHistoryDetails) {
+        CallHistory callHistory = callRepository.findById(id).orElseThrow(() -> new RuntimeException("Call not found"));
 
-        call.setCaller(callDetails.getCaller());
-        call.setReceiver(callDetails.getReceiver());
-        call.setDate(callDetails.getDate());
-        call.setDuration(callDetails.getDuration());
+        callHistory.setCaller(callHistoryDetails.getCaller());
+        callHistory.setReceiver(callHistoryDetails.getReceiver());
+        callHistory.setDate(callHistoryDetails.getDate());
+        callHistory.setDuration(callHistoryDetails.getDuration());
 
-        return callRepository.save(call);
+        return callRepository.save(callHistory);
     }
 
     public void deleteCall(Long id) {

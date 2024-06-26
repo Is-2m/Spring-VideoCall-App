@@ -1,7 +1,7 @@
 package com.ensamc.mbdio.VideoCallApp.controllers;
 
-import com.ensamc.mbdio.VideoCallApp.entities.Call;
-import com.ensamc.mbdio.VideoCallApp.services.CallService;
+import com.ensamc.mbdio.VideoCallApp.entities.CallHistory;
+import com.ensamc.mbdio.VideoCallApp.services.CallHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,36 +11,36 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/call")
-public class CallController {
+public class CallHistoryController {
 
     @Autowired
-    private CallService callService;
+    private CallHistoryService callHistoryService;
 
     @GetMapping
-    public List<Call> getAllCalls() {
-        return callService.getAllCalls();
+    public List<CallHistory> getAllCalls() {
+        return callHistoryService.getAllCalls();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Call> getCallById(@PathVariable Long id) {
-        Optional<Call> call = callService.getCallById(id);
+    public ResponseEntity<CallHistory> getCallById(@PathVariable Long id) {
+        Optional<CallHistory> call = callHistoryService.getCallById(id);
         return call.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Call createCall(@RequestBody Call call) {
-        return callService.createCall(call);
+    public CallHistory createCall(@RequestBody CallHistory callHistory) {
+        return callHistoryService.createCall(callHistory);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Call> updateCall(@PathVariable Long id, @RequestBody Call callDetails) {
-        Call updatedCall = callService.updateCall(id, callDetails);
-        return ResponseEntity.ok(updatedCall);
+    public ResponseEntity<CallHistory> updateCall(@PathVariable Long id, @RequestBody CallHistory callHistoryDetails) {
+        CallHistory updatedCallHistory = callHistoryService.updateCall(id, callHistoryDetails);
+        return ResponseEntity.ok(updatedCallHistory);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCall(@PathVariable Long id) {
-        callService.deleteCall(id);
+        callHistoryService.deleteCall(id);
         return ResponseEntity.noContent().build();
     }
 }

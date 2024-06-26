@@ -1,24 +1,24 @@
 package com.ensamc.mbdio.VideoCallApp.controllers;
 
 import com.ensamc.mbdio.VideoCallApp.entities.Message;
-import com.ensamc.mbdio.VideoCallApp.services.MessageLogService;
+import com.ensamc.mbdio.VideoCallApp.services.MessageService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/message-log")
-public class MessageLogController {
+public class MessageController {
 
     @Autowired
-    private MessageLogService messageLogService;
+    private MessageService messageService;
     @Autowired
     private EntityManager entityManager;
 
     @PostMapping
-    public Message createMessageLog(@RequestBody Message message) {
+    public Message createMessage(@RequestBody Message message) {
 
-        return messageLogService.createMessageLog(message);
+        return messageService.createMessage(message);
     }
 
 }

@@ -58,6 +58,7 @@ public class ProfilePictureController {
             byte[] image = Files.readAllBytes(path);
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(path));
+            headers.setCacheControl("max-age=1209600"); //2 weeks
             return new ResponseEntity<>(image, headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

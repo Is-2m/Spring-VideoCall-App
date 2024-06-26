@@ -1,28 +1,41 @@
 package com.ensamc.mbdio.VideoCallApp.controllers;
 
-import com.ensamc.mbdio.VideoCallApp.entities.ChatMessage;
+import com.ensamc.mbdio.VideoCallApp.entities.CallHistory;
+import com.ensamc.mbdio.VideoCallApp.entities.Message;
+import com.ensamc.mbdio.VideoCallApp.services.CallHistoryService;
+import com.ensamc.mbdio.VideoCallApp.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class WebSocketChatController{
+public class WebSocketChatController {
     @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
+    private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private MessageService messageService;
+    @Autowired
+    private CallHistoryService callHistoryService;
 
-    @MessageMapping("/chat.sendMessage")
-    public void sendMessage(ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        String recipient = chatMessage.getRecipient();
-        messagingTemplate.convertAndSendToUser(recipient, "/queue/messages", chatMessage);
+    @MessageMapping("/chats/{chatId}/msg")
+    public void sendMessage(@PathVariable String chatId, @Payload Message msg) {
+        String chatID = msg.getChat().getId().toString();
+        String path = "/topic/chats/" + chatID + "/msg";
+        messageService.createMessage(msg);
+        messagingTemplate.convertAndSend(path, msg);
+
     }
 
-    @MessageMapping("/chat.addUser")
-    @SendToUser("/queue/messages")
-    public ChatMessage addUser(ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        return chatMessage;
+    @MessageMapping("/calls/{callId}/msg")
+    public void sendCall(@PathVariable String chatId, @Payload CallHistory callHistory) {
+        String callID = callHistory.getId().toString();
+        String path = "/topic/calls/" + callID + "/" + callHistory.getReceiver().getId();
+        callHistoryService.createCall(callHistory);
+        messagingTemplate.convertAndSend(path, callHistory);
+
     }
+
 }
