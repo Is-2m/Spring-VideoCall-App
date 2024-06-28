@@ -2,9 +2,9 @@ spring:
   application:
     name: VideoCallApp
   datasource:
-    url: jdbc:mysql://localhost:3306/db_video_call
-    username: root
-    password:
+    url: jdbc:mysql://mimichat-db-mimichat.e.aivencloud.com:26039/defaultdb?sslmode=require
+    username: avnadmin
+    password: AVNS_tT5tXRVWiadktHDb8c6
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
