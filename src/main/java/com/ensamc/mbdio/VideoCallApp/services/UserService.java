@@ -51,6 +51,10 @@ public class UserService {
 
     }
 
+    public List<User> findUsersByName(String name){
+        return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameIsContainingIgnoreCase(name, name);
+    }
+
 //    public User updatePass(Long id, User user) {
 //        User userToUpdate = userRepository.findById(id).orElse(null);
 //        if (userToUpdate != null) {

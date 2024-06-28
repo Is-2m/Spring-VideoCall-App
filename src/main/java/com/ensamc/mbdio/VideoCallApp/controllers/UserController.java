@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -26,4 +28,12 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<User>> findUsersByName(@PathVariable String name) {
+        System.out.println("UserController.findUsersByName");
+        System.out.println(name);
+        return ResponseEntity.ok(userService.findUsersByName(name));
+    }
+
 }

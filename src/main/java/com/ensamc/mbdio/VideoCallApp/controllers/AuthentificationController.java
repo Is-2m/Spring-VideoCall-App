@@ -2,6 +2,8 @@ package com.ensamc.mbdio.VideoCallApp.controllers;
 
 import com.ensamc.mbdio.VideoCallApp.entities.User;
 import com.ensamc.mbdio.VideoCallApp.services.AuthentificationService;
+import com.ensamc.mbdio.VideoCallApp.utils.JwtUtil;
+import com.ensamc.mbdio.VideoCallApp.wrapper.AuthResponseWrapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,42 +21,42 @@ public class AuthentificationController {
 
     @Autowired
     private AuthentificationService authService;
-    private static final Logger logger = LoggerFactory.getLogger(AuthentificationController.class);
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<User> login(@RequestBody Map<String, String> input) {
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> input) {
+        System.out.println("AuthentificationController.login");
+
         String email = input.get("email");
+        System.out.println("Email: " + email);
+
         String password = input.get("password");
+        System.out.println("Password: " + password);
 
+        User user = authService.login(email, password);
+        System.out.println("User: " + user==null?"null":user.toString());
 
-        User user = authService.login(email,password);
         if (user != null) {
-            return ResponseEntity.ok(user);
+            final String jwt = jwtUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(new AuthResponseWrapper(jwt, user));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User jsonUser) {
-//        System.out.println("AuthentificationController.register");
-        logger.info("AuthentificationController.register");
-        if(jsonUser != null){
-//            System.out.println("jsonUser isn't null " + jsonUser);
-            logger.info("jsonUser isn't null " + jsonUser);
+    public ResponseEntity<?> register(@RequestBody User jsonUser) {
+        if (jsonUser != null) {
             User user = authService.register(jsonUser);
             if (user != null) {
-//                System.out.println("Done Register" + jsonUser);
-                logger.info("Done Register" + jsonUser);
-                return ResponseEntity.ok(user);
+                final String jwt = jwtUtil.generateToken(user.getUsername());
+                return ResponseEntity.ok(new AuthResponseWrapper(jwt, user));
             } else {
-//                System.out.println("Done't Register");
-                logger.info("Done't Register");
                 return ResponseEntity.status(400).build(); // Bad Request
             }
-
-        }else {
-//            System.out.println("jsonUser is null ");
-            logger.info("jsonUser is null ");
-
+        } else {
             return ResponseEntity.status(400).build(); // Bad Request
         }
 
@@ -62,11 +64,9 @@ public class AuthentificationController {
 
     @PostMapping("/logout")
     public void logout(@RequestBody User jsonUser) {
-        System.out.println("AuthentificationController.logout");
-//        System.out.println(jsonUser.toString());
-        if(jsonUser != null){
+        if (jsonUser != null) {
             authService.disconnectUser(jsonUser);
-        }else {
+        } else {
             System.out.println("jsonUser is null ");
         }
 

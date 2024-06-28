@@ -41,6 +41,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public User(Long id){
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "User{\n" +

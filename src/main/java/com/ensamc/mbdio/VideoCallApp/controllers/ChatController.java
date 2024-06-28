@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/api/chats")
 public class ChatController {
 
     @Autowired
@@ -17,5 +17,10 @@ public class ChatController {
     @GetMapping("/{userId}/all")
     public List<Chat> getChatsByUserId(@PathVariable Long userId) {
         return chatService.getChatsByUserId(userId);
+    }
+
+    @PostMapping("/create")
+    public Chat createChat(@RequestBody Chat chat) {
+        return chatService.createChat(chat);
     }
 }

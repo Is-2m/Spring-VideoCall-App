@@ -4,6 +4,7 @@ import com.ensamc.mbdio.VideoCallApp.entities.CallHistory;
 import com.ensamc.mbdio.VideoCallApp.entities.Message;
 import com.ensamc.mbdio.VideoCallApp.services.CallHistoryService;
 import com.ensamc.mbdio.VideoCallApp.services.MessageService;
+import com.ensamc.mbdio.VideoCallApp.wrapper.ResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -18,23 +19,35 @@ public class WebSocketChatController {
     @Autowired
     private MessageService messageService;
     @Autowired
-    private CallHistoryService callHistoryService;
+    private CallHistoryService callService;
 
     @MessageMapping("/chats/{chatId}/msg")
     public void sendMessage(@PathVariable String chatId, @Payload Message msg) {
-        String chatID = msg.getChat().getId().toString();
-        String path = "/topic/chats/" + chatID + "/msg";
-        messageService.createMessage(msg);
-        messagingTemplate.convertAndSend(path, msg);
 
+        String chatID = msg.getChat().getId().toString();
+
+
+        String pathReceiver = "/topic/notifications/" + msg.getReceiver().getId();
+        String pathSender = "/topic/notifications/" + msg.getSender().getId();
+
+        messageService.createMessage(msg);
+
+        ResponseWrapper<Message> wrappedMsg = new ResponseWrapper<>("message", msg, chatID);
+
+        messagingTemplate.convertAndSend(pathSender, wrappedMsg);
+        messagingTemplate.convertAndSend(pathReceiver, wrappedMsg);
     }
 
-    @MessageMapping("/calls/{callId}/msg")
-    public void sendCall(@PathVariable String chatId, @Payload CallHistory callHistory) {
-        String callID = callHistory.getId().toString();
-        String path = "/topic/calls/" + callID + "/" + callHistory.getReceiver().getId();
-        callHistoryService.createCall(callHistory);
-        messagingTemplate.convertAndSend(path, callHistory);
+    @MessageMapping("/calls")
+    public void sendCall(@PathVariable String callId, @Payload CallHistory call) {
+
+        String path = "/topic/notifications/" + call.getReceiver().getId();
+
+        callService.createCall(call);
+
+        ResponseWrapper<CallHistory> wrappedCall = new ResponseWrapper<>("call", call);
+
+        messagingTemplate.convertAndSend(path, wrappedCall);
 
     }
 

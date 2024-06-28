@@ -21,10 +21,14 @@ public class CallHistory {
     @JoinColumn(name = "id_receiver")
     private User receiver;
 
+    @Column(unique = true,nullable = false)
+    private String roomId;
+
     private Long date;
 
     private int duration;
 
+    @Enumerated(EnumType.STRING)
     private CallState state;
 
 }

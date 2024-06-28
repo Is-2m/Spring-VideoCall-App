@@ -22,9 +22,8 @@ public class FriendshipController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Friendship> getFriendshipById(@PathVariable Long id) {
-        Optional<Friendship> friendship = friendshipService.getFriendshipById(id);
-        return friendship.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public List<Friendship> getFriendshipsById(@PathVariable Long id) {
+        return friendshipService.getFriendshipsByUserID(id);
     }
 
     @PostMapping

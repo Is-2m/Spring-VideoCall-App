@@ -22,6 +22,9 @@ public class FriendshipService {
         return friendshipRepository.findById(id);
     }
 
+    public List<Friendship> getFriendshipsByUserID(Long id) {
+        return friendshipRepository.findByUserID(id);
+    }
     public Friendship createFriendship(Friendship friendship) {
         return friendshipRepository.save(friendship);
     }
