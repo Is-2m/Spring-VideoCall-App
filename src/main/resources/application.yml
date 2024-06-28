@@ -24,17 +24,17 @@ spring:
 uploads:
   directory: uploads/images
 
-server:
-  port: 8443  # Standard HTTPS port
-  ssl:
-    key-store-type: JKS
-    key-store: classpath:keystore.jks
-    key-store-password: 297i!54ZgmeJD$])
-    key-alias: tomcat
-  address: 0.0.0.0  # Bind to all network interfaces
+#server:
+#  port: 8443  # Standard HTTPS port
+#  ssl:
+#    key-store-type: JKS
+#    key-store: classpath:keystore.jks
+#    key-store-password: 297i!54ZgmeJD$])
+#    key-alias: tomcat
+#  address: 0.0.0.0  # Bind to all network interfaces
 
-logging:
-  level:
-    root: INFO
-    org.springframework.web: DEBUG
-    com.ensamc: DEBUG  # Replace with your actual package name
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.web: DEBUG
+#    com.ensamc: DEBUG  # Replace with your actual package name
