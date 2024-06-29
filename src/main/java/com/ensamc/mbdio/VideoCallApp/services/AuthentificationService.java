@@ -61,7 +61,7 @@ public class AuthentificationService {
         if (userr != null) {
             userr.setStatus(Status.OFFLINE);
             System.out.println("User disconnected");
-            System.out.println(userr.toString());
+//            System.out.println(userr.toString());
             userRepository.save(userr);
         }else {
             System.out.println("User not found");

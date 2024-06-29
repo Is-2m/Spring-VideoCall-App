@@ -19,7 +19,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
 
         System.out.println("UserController.updateUser");
-        System.out.println(user);
+//        System.out.println(user);
 
         User updatedUser = userService.updateUser(id, user);
         if (updatedUser != null) {
@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping("/search/{name}")
     public ResponseEntity<List<User>> findUsersByName(@PathVariable String name) {
         System.out.println("UserController.findUsersByName");
-        System.out.println(name);
+//        System.out.println(name);
         return ResponseEntity.ok(userService.findUsersByName(name));
     }
 

@@ -33,10 +33,10 @@ public class AuthentificationController {
         System.out.println("Email: " + email);
 
         String password = input.get("password");
-        System.out.println("Password: " + password);
+//        System.out.println("Password: " + password);
 
         User user = authService.login(email, password);
-        System.out.println("User: " + user==null?"null":user.toString());
+//        System.out.println("User: " + user==null?"null":user.toString());
 
         if (user != null) {
             final String jwt = jwtUtil.generateToken(user.getUsername());

@@ -29,7 +29,7 @@ public class ProfilePictureController {
     @PostMapping("/upload/{userId}")
     public ResponseEntity<String> uploadProfilePicture(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
         System.out.println("ProfilePictureController.uploadProfilePicture");
-        System.out.println(file);
+//        System.out.println(file);
         if (file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
         }
