@@ -73,7 +73,10 @@ public class ProfilePicService {
         Blob blob = storage.create(blobInfo, Files.readAllBytes(file.toPath()));
 
         // Generate a signed URL that's valid for a long time (e.g., 10 years)
+        System.out.println("ProfilePicService.uploadFile");
         URL signedUrl = storage.signUrl(blobInfo, 3650, TimeUnit.DAYS);
+
+        System.out.println(signedUrl);
 
         return signedUrl.toString();
     }

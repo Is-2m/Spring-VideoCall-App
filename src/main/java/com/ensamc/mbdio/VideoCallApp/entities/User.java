@@ -2,7 +2,7 @@ package com.ensamc.mbdio.VideoCallApp.entities;
 
 //import jakarta.persistence.*;
 
-import  jakarta.persistence.*;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -36,12 +36,13 @@ public class User {
 
     private Long birthDate;
 
+    @Column(columnDefinition = "TEXT")
     private String profilePicture;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public User(Long id){
+    public User(Long id) {
         this.id = id;
     }
 
