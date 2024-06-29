@@ -1,5 +1,6 @@
 package com.ensamc.mbdio.VideoCallApp.controllers;
 
+import com.ensamc.mbdio.VideoCallApp.services.ProfilePicService;
 import com.ensamc.mbdio.VideoCallApp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +22,8 @@ public class ProfilePictureController {
     private final Path uploadsPath;
 
     @Autowired
-    private UserService userService;
+    private ProfilePicService pdpService;
+
     @Autowired
     public ProfilePictureController(Path uploadsPath) {
         this.uploadsPath = uploadsPath;
@@ -29,23 +32,19 @@ public class ProfilePictureController {
     @PostMapping("/upload/{userId}")
     public ResponseEntity<String> uploadProfilePicture(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
         System.out.println("ProfilePictureController.uploadProfilePicture");
-//        System.out.println(file);
-        if (file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
-        }
 
         try {
-            String filename = StringUtils.cleanPath(file.getOriginalFilename());
-            Path path = uploadsPath.resolve(filename);
-            Files.createDirectories(path.getParent());  // Ensure directory exists
-            Files.copy(file.getInputStream(), path);
+            if (file.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
+            }
+            pdpService.uploadProfilePicture(userId, file);
 
-            userService.updateProfilePicture(userId, filename);
-
-            return ResponseEntity.ok("File uploaded successfully: " + filename);
-        } catch (IOException e) {
+            return ResponseEntity.ok("File uploaded successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not upload the file: " + e.getMessage());
         }
+
     }
 
     @GetMapping("/{filename}")

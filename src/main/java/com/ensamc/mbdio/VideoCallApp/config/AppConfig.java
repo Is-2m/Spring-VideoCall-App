@@ -17,7 +17,6 @@ public class AppConfig {
 
     @Bean
     public Path uploadsPath() {
-        // Determine the absolute path to the uploads directory relative to the JAR location
         Path jarPath = Paths.get(System.getProperty("user.dir")); // Current working directory
         Path uploadsPath = jarPath.resolve(uploadsDirectory);
 
