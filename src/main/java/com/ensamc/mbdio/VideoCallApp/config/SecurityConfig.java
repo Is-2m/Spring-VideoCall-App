@@ -27,7 +27,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**", "/ws/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/ws/**","/videocall.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
