@@ -58,6 +58,28 @@ public class ProfilePicService {
         return tempFile;
     }
 
+    //    private String uploadFile1(File file, String fileName, String contentType) throws IOException {
+//        BlobId blobId = BlobId.of("mimichat-fb1f8.appspot.com", fileName);
+//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+//                .setContentType(contentType)
+//                .build();
+//
+//        InputStream inputStream = ProfilePicService.class.getClassLoader()
+//                .getResourceAsStream("mimichat-fb1f8-firebase-adminsdk-yrdi4-36aee5f8e0.json");
+//        Credentials credentials = GoogleCredentials.fromStream(inputStream);
+//        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+//
+//        // Upload the file
+//        Blob blob = storage.create(blobInfo, Files.readAllBytes(file.toPath()));
+//
+//        // Generate a signed URL that's valid for a long time (e.g., 10 years)
+//        System.out.println("ProfilePicService.uploadFile");
+//        URL signedUrl = storage.signUrl(blobInfo, 3650, TimeUnit.DAYS);
+//
+//        System.out.println(signedUrl);
+//
+//        return signedUrl.toString();
+//    }
     private String uploadFile(File file, String fileName, String contentType) throws IOException {
         BlobId blobId = BlobId.of("mimichat-fb1f8.appspot.com", fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
@@ -68,17 +90,14 @@ public class ProfilePicService {
                 .getResourceAsStream("mimichat-fb1f8-firebase-adminsdk-yrdi4-36aee5f8e0.json");
         Credentials credentials = GoogleCredentials.fromStream(inputStream);
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+        storage.create(blobInfo, Files.readAllBytes(file.toPath()));
 
-        // Upload the file
-        Blob blob = storage.create(blobInfo, Files.readAllBytes(file.toPath()));
+        String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/mimichat-fb1f8.appspot.com/o/%s?alt=media";
+        String res = String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
 
-        // Generate a signed URL that's valid for a long time (e.g., 10 years)
         System.out.println("ProfilePicService.uploadFile");
-        URL signedUrl = storage.signUrl(blobInfo, 3650, TimeUnit.DAYS);
-
-        System.out.println(signedUrl);
-
-        return signedUrl.toString();
+        System.out.println(res);
+        return res;
     }
 
 }
