@@ -18,26 +18,16 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthentificationController {
-
     @Autowired
     private AuthentificationService authService;
-
     @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> input) {
-        System.out.println("AuthentificationController.login");
-
         String email = input.get("email");
-        System.out.println("Email: " + email);
-
         String password = input.get("password");
-//        System.out.println("Password: " + password);
-
         User user = authService.login(email, password);
-//        System.out.println("User: " + user==null?"null":user.toString());
-
         if (user != null) {
             final String jwt = jwtUtil.generateToken(user.getUsername());
             return ResponseEntity.ok(new AuthResponseWrapper(jwt, user));
@@ -59,7 +49,6 @@ public class AuthentificationController {
         } else {
             return ResponseEntity.status(400).build(); // Bad Request
         }
-
     }
 
     @PostMapping("/logout")
@@ -69,7 +58,5 @@ public class AuthentificationController {
         } else {
             System.out.println("jsonUser is null ");
         }
-
     }
-
 }

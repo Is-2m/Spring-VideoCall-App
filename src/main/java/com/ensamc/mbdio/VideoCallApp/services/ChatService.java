@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ChatService {
-
+public class ChatService implements IChatService {
 
     @Autowired
     private IChatRepository chatRepository;
 
+    @Override
     public List<Chat> getChatsByUserId(Long userId) {
         return chatRepository.findChatsByUserId(userId);
-//    return new ArrayList<>();
     }
 
+    @Override
     public Chat getChatBySenderAndReceiver(Long senderId, Long receiverId) {
         User sender = new User(senderId);
         User receiver = new User(receiverId);
@@ -37,7 +37,9 @@ public class ChatService {
         return res;
     }
 
+    @Override
     public Chat createChat(Chat chat) {
         return chatRepository.save(chat);
     }
 }
+

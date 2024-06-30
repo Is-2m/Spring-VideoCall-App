@@ -9,22 +9,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CallHistoryService {
+public class CallHistoryService implements ICallHistoryService {
     @Autowired
     private ICallHistoryRepository callRepository;
 
+    @Override
     public List<CallHistory> getAllCalls() {
         return callRepository.findAll();
     }
 
+    @Override
     public Optional<CallHistory> getCallById(Long id) {
         return callRepository.findById(id);
     }
 
+    @Override
     public CallHistory createCall(CallHistory callHistory) {
         return callRepository.save(callHistory);
     }
 
+    @Override
     public CallHistory updateCall(Long id, CallHistory callHistoryDetails) {
         CallHistory callHistory = callRepository.findById(id).orElseThrow(() -> new RuntimeException("Call not found"));
 
@@ -36,8 +40,9 @@ public class CallHistoryService {
         return callRepository.save(callHistory);
     }
 
+    @Override
     public void deleteCall(Long id) {
         callRepository.deleteById(id);
     }
-
 }
+

@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MessageService {
+public class MessageService implements IMessageService {
 
     @Autowired
     private IMessageRepository messageRepository;
 
+    @Override
     public Message createMessage(Message message) {
         return messageRepository.save(message);
     }
-
 }
+

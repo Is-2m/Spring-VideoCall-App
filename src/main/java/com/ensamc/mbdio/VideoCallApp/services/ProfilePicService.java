@@ -20,11 +20,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class ProfilePicService {
+public class ProfilePicService implements IProfilePicService {
 
     @Autowired
     private UserService userService;
 
+    @Override
     public void uploadProfilePicture(Long userId, MultipartFile file) {
         try {
             String originalFileName = file.getOriginalFilename();
@@ -34,7 +35,6 @@ public class ProfilePicService {
             File tempFile = convertToFile(file, fileName);
             System.out.println("ProfilePicService.uploadProfilePicture");
             System.out.println(file.getContentType());
-
 
             String fileUrl = uploadFile(tempFile, fileName, file.getContentType());
 
@@ -58,28 +58,6 @@ public class ProfilePicService {
         return tempFile;
     }
 
-    //    private String uploadFile1(File file, String fileName, String contentType) throws IOException {
-//        BlobId blobId = BlobId.of("mimichat-fb1f8.appspot.com", fileName);
-//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-//                .setContentType(contentType)
-//                .build();
-//
-//        InputStream inputStream = ProfilePicService.class.getClassLoader()
-//                .getResourceAsStream("mimichat-fb1f8-firebase-adminsdk-yrdi4-36aee5f8e0.json");
-//        Credentials credentials = GoogleCredentials.fromStream(inputStream);
-//        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-//
-//        // Upload the file
-//        Blob blob = storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-//
-//        // Generate a signed URL that's valid for a long time (e.g., 10 years)
-//        System.out.println("ProfilePicService.uploadFile");
-//        URL signedUrl = storage.signUrl(blobInfo, 3650, TimeUnit.DAYS);
-//
-//        System.out.println(signedUrl);
-//
-//        return signedUrl.toString();
-//    }
     private String uploadFile(File file, String fileName, String contentType) throws IOException {
         BlobId blobId = BlobId.of("mimichat-fb1f8.appspot.com", fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
@@ -99,6 +77,5 @@ public class ProfilePicService {
         System.out.println(res);
         return res;
     }
-
 }
 

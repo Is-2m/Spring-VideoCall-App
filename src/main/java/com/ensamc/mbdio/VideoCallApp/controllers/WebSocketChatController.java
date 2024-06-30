@@ -48,7 +48,5 @@ public class WebSocketChatController {
         ResponseWrapper<CallHistory> wrappedCall = new ResponseWrapper<>("call", call);
 
         messagingTemplate.convertAndSend(path, wrappedCall);
-
     }
-
 }

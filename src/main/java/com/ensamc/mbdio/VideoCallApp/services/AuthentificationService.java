@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthentificationService {
+public class AuthentificationService implements IAuthentificationService {
 
     @Autowired
     private IUserRepository userRepository;
@@ -22,11 +22,9 @@ public class AuthentificationService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthentificationService.class);
-
+    @Override
     public User login(String email, String password) {
         User user = userRepository.findByEmail(email.toLowerCase());
-//    userRepository.
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             user.setStatus(Status.ONLINE);
             userRepository.save(user);
@@ -34,6 +32,8 @@ public class AuthentificationService {
         }
         return null;
     }
+
+    @Override
     public User register(User jsonUser) {
         User user = userRepository.findByEmail(jsonUser.getEmail().toLowerCase());
         if (user == null) {
@@ -53,17 +53,15 @@ public class AuthentificationService {
         }
         return null;
     }
-
-
-    public void disconnectUser(User user){
+    @Override
+    public void disconnectUser(User user) {
         System.out.println("AuthentificationService.disconnectUser");
         User userr = userRepository.findByEmail(user.getEmail());
         if (userr != null) {
             userr.setStatus(Status.OFFLINE);
             System.out.println("User disconnected");
-//            System.out.println(userr.toString());
             userRepository.save(userr);
-        }else {
+        } else {
             System.out.println("User not found");
         }
     }

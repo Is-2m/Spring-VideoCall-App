@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
+
     @Autowired
     private IUserRepository userRepository;
 
+    @Override
     public User updateUser(Long id, User user) {
         User userToUpdate = userRepository.findById(id).orElse(null);
         if (userToUpdate != null) {
@@ -21,7 +23,6 @@ public class UserService {
             userToUpdate.setFirstName(user.getFirstName());
             userToUpdate.setLastName(user.getLastName());
             userToUpdate.setPhone(user.getPhone());
-//            userToUpdate.setProfilePicture(user.getProfilePicture());
             userToUpdate.setUsername(user.getUsername());
             userToUpdate.setBirthDate(user.getBirthDate());
             userToUpdate.setBio(user.getBio());
@@ -30,6 +31,7 @@ public class UserService {
         return null;
     }
 
+    @Override
     public User updatePass(Long id, User user) {
         User userToUpdate = userRepository.findById(id).orElse(null);
         if (userToUpdate != null) {
@@ -38,6 +40,8 @@ public class UserService {
         }
         return null;
     }
+
+    @Override
     public User updateProfilePicture(Long id, String profilePicture) {
         User userToUpdate = userRepository.findById(id).orElse(null);
         if (userToUpdate != null) {
@@ -46,12 +50,14 @@ public class UserService {
         }
         return null;
     }
-    public List<User> findConnectedUsers(){
-        return userRepository.findByStatus(Status.ONLINE);
 
+    @Override
+    public List<User> findConnectedUsers() {
+        return userRepository.findByStatus(Status.ONLINE);
     }
 
-    public List<User> findUsersByName(String name){
+    @Override
+    public List<User> findUsersByName(String name) {
         return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameIsContainingIgnoreCase(name, name);
     }
 
