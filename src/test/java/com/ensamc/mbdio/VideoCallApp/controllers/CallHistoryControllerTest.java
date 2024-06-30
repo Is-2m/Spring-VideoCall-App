@@ -2,6 +2,7 @@ package com.ensamc.mbdio.VideoCallApp.controllers;
 
 import com.ensamc.mbdio.VideoCallApp.config.TestSecurityConfig;
 import com.ensamc.mbdio.VideoCallApp.entities.CallHistory;
+import com.ensamc.mbdio.VideoCallApp.entities.User;
 import com.ensamc.mbdio.VideoCallApp.services.CallHistoryService;
 import com.ensamc.mbdio.VideoCallApp.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,11 +43,23 @@ public class CallHistoryControllerTest {
 
     private CallHistory testCall;
 
+    private User caller;
+    private User receiver;
+
     @BeforeEach
     void setUp() {
+
+        caller = new User();
+        caller.setId(1L);
+
+        receiver = new User();
+        receiver.setId(2L);
+
         testCall = new CallHistory();
         testCall.setId(1L);
         testCall.setDuration(120);
+        testCall.setCaller(caller);
+        testCall.setReceiver(receiver);
     }
 
     @Test
@@ -57,7 +70,9 @@ public class CallHistoryControllerTest {
         mockMvc.perform(get("/api/call"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].duration").value(120));
+                .andExpect(jsonPath("$[0].duration").value(120))
+                .andExpect(jsonPath("$[0].caller.id").value(1))
+                .andExpect(jsonPath("$[0].receiver.id").value(2));
     }
 
     @Test
@@ -68,7 +83,9 @@ public class CallHistoryControllerTest {
         mockMvc.perform(get("/api/call/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.duration").value(120));
+                .andExpect(jsonPath("$.duration").value(120))
+                .andExpect(jsonPath("$.caller.id").value(1))
+                .andExpect(jsonPath("$.receiver.id").value(2));
     }
 
     @Test
@@ -90,7 +107,9 @@ public class CallHistoryControllerTest {
                         .content(objectMapper.writeValueAsString(testCall)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.duration").value(120));
+                .andExpect(jsonPath("$.duration").value(120))
+                .andExpect(jsonPath("$.caller.id").value(1))
+                .andExpect(jsonPath("$.receiver.id").value(2));;
     }
 
     @Test
@@ -103,7 +122,9 @@ public class CallHistoryControllerTest {
                         .content(objectMapper.writeValueAsString(testCall)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.duration").value(120));
+                .andExpect(jsonPath("$.duration").value(120))
+                .andExpect(jsonPath("$.caller.id").value(1))
+                .andExpect(jsonPath("$.receiver.id").value(2));;
     }
 
     @Test
