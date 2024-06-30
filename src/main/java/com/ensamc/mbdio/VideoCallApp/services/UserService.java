@@ -58,7 +58,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> findUsersByName(String name) {
-        return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameIsContainingIgnoreCaseOrUsername(name, name,name);
+        return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameIsContainingIgnoreCaseOrUsernameContainingIgnoreCase(name, name,name);
     }
 
 //    public User updatePass(Long id, User user) {

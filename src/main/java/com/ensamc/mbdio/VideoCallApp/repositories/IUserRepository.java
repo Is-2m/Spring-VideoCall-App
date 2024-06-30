@@ -11,6 +11,6 @@ public interface IUserRepository extends JpaRepository<User,Long> {
 
     List<User> findByStatus(Status status);
 
-    List<User> findByFirstNameContainingIgnoreCaseOrLastNameIsContainingIgnoreCaseOrUsername(String firstName, String lastName, String username);
+    List<User> findByFirstNameContainingIgnoreCaseOrLastNameIsContainingIgnoreCaseOrUsernameContainingIgnoreCase(String firstName, String lastName, String username);
 }
 
